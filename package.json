@@ -12,10 +12,13 @@
     "@types/node": "^12.19.16",
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.0",
+    "@types/styled-components": "^5.1.7",
+    "eslint-plugin-use-macros": "^2.5.0",
     "fontsource-roboto": "^4.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",
+    "styled-components": "^5.2.1",
     "typescript": "^4.1.4"
   },
   "scripts": {
@@ -37,12 +40,15 @@
           "**/*.{ts,tsx}"
         ],
         "rules": {
-          "semi": [
-            "error",
-            "never"
-          ],
-          "react/jsx-handler-names": "off"
-        }
+          "semi": ["error", "never"],
+          "object-curly-spacing": ["error", "always"],
+          "array-bracket-spacing": ["error", "always"],
+          "react/jsx-handler-names": "off",
+          "use-macros/styled-components": "error"
+        },
+        "plugins": [
+          "eslint-plugin-use-macros"
+        ]
       }
     ]
   },
