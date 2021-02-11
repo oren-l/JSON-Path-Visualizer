@@ -5,10 +5,8 @@ import { App } from "src/features/App"
 import { ThemeProvider } from "src/theme"
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>,
   document.getElementById('root')
 )

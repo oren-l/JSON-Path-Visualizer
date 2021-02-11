@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components/macro"
 
-const absoluteFill = css`
+export const absoluteFill = css`
   position: absolute;
   left: 0;
   right: 0;
