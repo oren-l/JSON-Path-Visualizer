@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
-import { theme } from "./theme"
+import { ReactNode } from 'react'
+import { theme } from './theme'
 
 import {
   StylesProvider,

@@ -1,6 +1,6 @@
 import { ReactNode, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Backdrop } from "./Backdrop"
+import { Backdrop } from './Backdrop'
 
 type Props = {
   children: ReactNode,
