@@ -1,10 +1,10 @@
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Backdrop } from './Backdrop'
-import { readFile } from './readFile'
+import { useStore } from 'src/store'
 
 type Props = {
-  children: (data?: string) => ReactNode,
+  children: ReactNode,
   className?: string
 }
 
@@ -12,17 +12,13 @@ export function FileDropzone ({
   children,
   className
 }: Props) {
-  const [ data, setData ] = useState<string>('hello')
+  const store = useStore()
 
-  const onDrop = useCallback(async (files: File[]) => {
+  const onDrop = useCallback((files: File[]) => {
     const [ file ] = files
     console.log('got request to upload file:', file)
-    const fileContent = await readFile(file)
-    // TODO: handle exception
-    // TODO: show spinner
-    // TODO: implement abort
-    setData(fileContent)
-  }, [])
+    store.loadFile(file)
+  }, [ store ])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -35,7 +31,7 @@ export function FileDropzone ({
     <div {...getRootProps({ className })}>
       <input {...getInputProps()} />
       {
-        children(data)
+        children
       }
       <Backdrop open={isDragActive} />
     </div>

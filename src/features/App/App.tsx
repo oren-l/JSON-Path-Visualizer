@@ -3,6 +3,7 @@ import { Layout, Main, Toolbar, absoluteFill } from './Layout'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { FileDropzone } from 'src/features/FileLoader'
+import { JsonViewer } from 'src/features/JsonViewer'
 
 const FileDropzoneArea = styled(FileDropzone)`
   ${absoluteFill}
@@ -11,28 +12,20 @@ const FileDropzoneArea = styled(FileDropzone)`
 export function App() {
   return (
     <FileDropzoneArea>
-      {json => (
-        <Layout>
-          <Toolbar>
-            <Container>
-              <Typography>
-                JSON Path Visualizer
-              </Typography>
-            </Container>
-          </Toolbar>
-          <Main>
-            <Container>
-              <pre>
-                {
-                  json
-                    ? json
-                    : ''
-                }
-              </pre>
-            </Container>
-          </Main>
-        </Layout>
-      )}
+      <Layout>
+        <Toolbar>
+          <Container>
+            <Typography>
+              JSON Path Visualizer
+            </Typography>
+          </Container>
+        </Toolbar>
+        <Main>
+          <Container>
+            <JsonViewer />
+          </Container>
+        </Main>
+      </Layout>
     </FileDropzoneArea>
   )
 }
