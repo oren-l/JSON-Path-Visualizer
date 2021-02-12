@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { FileDropzone } from 'src/features/FileLoader'
 import { JsonViewer } from 'src/features/JsonViewer'
+import { MainProgressBar } from 'src/features/UI/MainProgressBar'
+
 
 const FileDropzoneArea = styled(FileDropzone)`
   ${absoluteFill}
@@ -20,6 +22,7 @@ export function App() {
             </Typography>
           </Container>
         </Toolbar>
+        <MainProgressBar />
         <Main>
           <Container>
             <JsonViewer />

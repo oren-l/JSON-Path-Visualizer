@@ -12,12 +12,14 @@ export const Layout = styled.div`
   ${absoluteFill}
 
   display: grid;
-  grid-template-rows: 64px auto;
+  grid-template-rows: 64px 4px auto;
   grid-template-areas:
     "toolbar"
+    "progressbar"
     "main"
   ;
   overflow: hidden;
+  background-color: ${props => props.theme.palette.background.paper};
 `
 
 export const Toolbar = styled.div`
@@ -31,7 +33,6 @@ export const Main = styled.main`
   ${absoluteFill}
 
   grid-area: main;
-  background-color: ${props => props.theme.palette.background.paper};
   overflow: auto;
   display: flex;
 `

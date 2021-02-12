@@ -15,9 +15,7 @@ configure({
 })
 
 
-let store = new Store({
-  json: null
-})
+let store = new Store()
 
 const renderApp = () => {
   ReactDOM.render(
