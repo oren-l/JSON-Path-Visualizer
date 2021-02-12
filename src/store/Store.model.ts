@@ -36,6 +36,10 @@ export class Store {
     })
   }
 
+  get jsonAsObject () {
+    return JSON.parse(this.json ?? '""')
+  }
+
   loadFile = flow(function * (this: Store, file: File) {
     this.loading = true
     this.json = null
