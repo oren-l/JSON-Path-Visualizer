@@ -11,20 +11,28 @@ const FileDropzoneArea = styled(FileDropzone)`
 export function App() {
   return (
     <FileDropzoneArea>
-      <Layout>
-        <Toolbar>
-          <Container>
-            <Typography>
-              JSON Path Visualizer
-            </Typography>
-          </Container>
-        </Toolbar>
-        <Main>
-          <Container>
-            Hello World!
-          </Container>
-        </Main>
-      </Layout>
+      {json => (
+        <Layout>
+          <Toolbar>
+            <Container>
+              <Typography>
+                JSON Path Visualizer
+              </Typography>
+            </Container>
+          </Toolbar>
+          <Main>
+            <Container>
+              <pre>
+                {
+                  json
+                    ? json
+                    : ''
+                }
+              </pre>
+            </Container>
+          </Main>
+        </Layout>
+      )}
     </FileDropzoneArea>
   )
 }
