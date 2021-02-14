@@ -3,8 +3,11 @@ import { Layout, Main, Toolbar, absoluteFill } from './Layout'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { FileDropzone } from 'src/features/FileLoader'
-import { JsonViewer } from 'src/features/JsonViewer'
 import { MainProgressBar } from 'src/features/UI/MainProgressBar'
+
+
+import { ResultsList } from 'src/features/Query/Result/ResultsList'
+import { QueryInput } from 'src/features/Query/QueryInput'
 
 
 const FileDropzoneArea = styled(FileDropzone)`
@@ -25,7 +28,8 @@ export function App() {
         <MainProgressBar />
         <Main>
           <Container>
-            <JsonViewer />
+            <QueryInput />
+            <ResultsList />
           </Container>
         </Main>
       </Layout>
