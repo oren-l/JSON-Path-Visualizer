@@ -16,7 +16,7 @@ export const QueryInput = observer(function QueryInput() {
       store.setQuery(temp)
     }),
     [ store, temp ],
-    { wait: 300 }
+    { wait: 300 },
   )
 
   return (

@@ -6,9 +6,9 @@ export const theme = createMuiTheme({
     //  https://material-ui.com/customization/palette/
     type: 'dark',
     primary: {
-      main: blue.A200
+      main: blue.A200,
     },
     contrastThreshold: 3,
-    tonalOffset: 0.2
-  }
+    tonalOffset: 0.2,
+  },
 })

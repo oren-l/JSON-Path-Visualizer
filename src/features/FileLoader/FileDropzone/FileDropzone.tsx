@@ -10,7 +10,7 @@ type Props = {
 
 export function FileDropzone ({
   children,
-  className
+  className,
 }: Props) {
   const store = useStore()
 
@@ -24,7 +24,7 @@ export function FileDropzone ({
     onDrop,
     multiple: false,
     noClick: true,
-    noKeyboard: true
+    noKeyboard: true,
   })
 
   return (

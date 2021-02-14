@@ -26,7 +26,7 @@ export class QueryResult {
   static getSnapshot: GetSnapshot = instance => {
     return {
       id: instance.id,
-      data: JSON.stringify(instance.data)
+      data: JSON.stringify(instance.data),
     }
   }
 

@@ -50,7 +50,7 @@ export class Store {
     this.queryResults = queryResults.map(QueryResult.fromSnapshot)
 
     makeAutoObservable(this, {
-      loadFile: false
+      loadFile: false,
     })
   }
 
@@ -91,7 +91,7 @@ export class Store {
           //   type,
           //   full
           // })
-        }
+        },
       })
     } catch (error) {
       console.warn('oops!', error)

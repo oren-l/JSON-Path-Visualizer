@@ -65,6 +65,10 @@
           ],
           "space-infix-ops": "error",
           "comma-spacing": "error",
+          "comma-dangle": [
+            "error",
+            "always-multiline"
+          ],
           "react/jsx-handler-names": "off",
           "use-macros/styled-components": "error"
         },

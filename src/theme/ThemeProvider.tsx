@@ -4,11 +4,11 @@ import { theme } from './theme'
 import {
   StylesProvider,
   ThemeProvider as MuiThemeProvider,
-  CssBaseline
+  CssBaseline,
 } from '@material-ui/core'
 
 import {
-  ThemeProvider as StyledComponentsThemeProvider
+  ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components/macro'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 }
 
 export function ThemeProvider ({
-  children
+  children,
 }: Props) {
   return (
     <StylesProvider injectFirst>

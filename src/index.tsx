@@ -11,7 +11,7 @@ configure({
   enforceActions: 'always',
   computedRequiresReaction: true,
   observableRequiresReaction: true,
-  disableErrorBoundaries: true
+  disableErrorBoundaries: true,
 })
 
 
@@ -24,7 +24,7 @@ const renderApp = () => {
         <App />
       </StoreProvider>
     </ThemeProvider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   )
 }
 
