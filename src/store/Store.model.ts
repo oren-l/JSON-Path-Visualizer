@@ -1,12 +1,15 @@
 import { flow, makeAutoObservable } from 'mobx'
-import { readFile } from 'src/features/FileLoader'
 import { JSONPath } from 'jsonpath-plus'
+import { nanoid } from 'nanoid'
+
+import { readFile } from 'src/features/FileLoader'
+import { QueryResult, Snapshot as QueryResultSnapshot } from 'src/features/Query/Result/QueryResult.model'
 
 export interface Snapshot {
   json: string | null,
   loading: boolean,
   query: string,
-  queryResults: unknown[],
+  queryResults: QueryResultSnapshot[],
 }
 
 type GetSnapshot = () => Snapshot
@@ -24,34 +27,34 @@ export class Store {
   json!: string | null
   loading!: boolean
   query!: string
-  queryResults!: unknown[]
+  queryResults!: QueryResult[]
 
   loadSnapshot: LoadSnapshot = state => {
     this.json = state.json
     this.loading = state.loading
     this.query = state.query
-    this.queryResults = state.queryResults
+    this.queryResults = state.queryResults.map(QueryResult.fromSnapshot)
   }
 
   getSnapshot: GetSnapshot = () => ({
     json: this.json,
     loading: this.loading,
     query: this.query,
-    queryResults: this.queryResults,
+    queryResults: this.queryResults.map(QueryResult.getSnapshot),
   })
 
-  constructor (initialState: Snapshot = defaultState) {
+  constructor(initialState: Snapshot = defaultState) {
     this.loadSnapshot(initialState)
     makeAutoObservable(this, {
       loadFile: false
     })
   }
 
-  get jsonAsObject () {
+  get jsonAsObject() {
     return JSON.parse(this.json ?? '""')
   }
 
-  loadFile = flow(function * (this: Store, file: File) {
+  loadFile = flow(function* (this: Store, file: File) {
     this.loading = true
     this.json = null
     this.json = yield readFile(file)
@@ -78,6 +81,7 @@ export class Store {
         json: this.jsonAsObject,
         callback: (value, type, full) => {
           this.addQueryResult(value)
+          console.log('results:', this.queryResults.length)
           // console.log('node', {
           //   value,
           //   type,
@@ -94,6 +98,7 @@ export class Store {
 
   addQueryResult = (result: unknown) => {
     // console.log('add:', result)
-    this.queryResults.push(result)
+    const qr = new QueryResult(nanoid(), result)
+    this.queryResults.push(qr)
   }
 }

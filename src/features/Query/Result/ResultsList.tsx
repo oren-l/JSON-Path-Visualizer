@@ -8,10 +8,10 @@ export const ResultsList = observer(function ResultsList() {
   return (
     <>
       {
-        store.queryResults.map((result, idx) => (
-          <Paper key={idx} >
+        store.queryResults.map(result => (
+          <Paper key={result.id} >
             <pre>
-              {JSON.stringify(result, null, 2)}
+              {JSON.stringify(result.data, null, 2)}
             </pre>
           </Paper>
         ))
