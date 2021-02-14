@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid'
 import { readFile } from 'src/features/FileLoader'
 import { QueryResult, Snapshot as QueryResultSnapshot } from 'src/features/Query/Result/QueryResult.model'
 
+
 export interface Snapshot {
   json: string | null,
   loading: boolean,
@@ -12,8 +13,8 @@ export interface Snapshot {
   queryResults: QueryResultSnapshot[],
 }
 
-type GetSnapshot = () => Snapshot
-type LoadSnapshot = (state: Snapshot) => void
+type GetSnapshot = (instance: Store) => Snapshot
+type FromSnapshot = (snapshot: Snapshot) => Store
 
 const defaultState: Snapshot = {
   json: null,
@@ -24,27 +25,30 @@ const defaultState: Snapshot = {
 
 
 export class Store {
-  json!: string | null
-  loading!: boolean
-  query!: string
-  queryResults!: QueryResult[]
+  json: string | null
+  loading: boolean
+  query: string
+  queryResults: QueryResult[]
 
-  loadSnapshot: LoadSnapshot = state => {
-    this.json = state.json
-    this.loading = state.loading
-    this.query = state.query
-    this.queryResults = state.queryResults.map(QueryResult.fromSnapshot)
+  static fromSnapshot: FromSnapshot = snapshot => {
+    return new Store(snapshot)
   }
 
-  getSnapshot: GetSnapshot = () => ({
-    json: this.json,
-    loading: this.loading,
-    query: this.query,
-    queryResults: this.queryResults.map(QueryResult.getSnapshot),
+  static getSnapshot: GetSnapshot = ({ json, loading, query, queryResults }) => ({
+    json,
+    loading,
+    query,
+    queryResults: queryResults.map(QueryResult.getSnapshot),
   })
 
   constructor(initialState: Snapshot = defaultState) {
-    this.loadSnapshot(initialState)
+    const { json, loading, query, queryResults } = initialState
+
+    this.json = json
+    this.loading = loading
+    this.query = query
+    this.queryResults = queryResults.map(QueryResult.fromSnapshot)
+
     makeAutoObservable(this, {
       loadFile: false
     })

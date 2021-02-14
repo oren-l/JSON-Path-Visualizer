@@ -1,7 +1,8 @@
 {
     "editor.codeActionsOnSave": {
-        "source.fixAll": true
+        "source.fixAll": true,
     },
+    "eslint.alwaysShowStatus": true,
     "cSpell.words": [
         "fontsource"
     ]

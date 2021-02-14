@@ -63,6 +63,8 @@
             "error",
             "always"
           ],
+          "space-infix-ops": "error",
+          "comma-spacing": "error",
           "react/jsx-handler-names": "off",
           "use-macros/styled-components": "error"
         },
