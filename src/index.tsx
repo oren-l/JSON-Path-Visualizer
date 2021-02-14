@@ -6,6 +6,9 @@ import { App } from 'src/features/App'
 import { ThemeProvider } from 'src/theme'
 import { StoreProvider, Store } from 'src/store'
 
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import Worker from 'worker-loader!./worker/my.worker.ts'
+
 
 configure({
   enforceActions: 'always',
@@ -49,3 +52,9 @@ if (module.hot) {
 
 renderApp()
 
+const worker = new Worker()
+
+worker.postMessage({ a: 1 })
+worker.onmessage = (event) => { console.log (event.data)}
+
+worker.addEventListener('message', (event) => {})
