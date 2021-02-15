@@ -7,11 +7,6 @@ import { ThemeProvider } from 'src/theme'
 import { StoreProvider, Store } from 'src/store'
 
 
-import Worker from './worker'
-
-import * as Comlink from 'comlink'
-
-
 configure({
   enforceActions: 'always',
   computedRequiresReaction: true,
@@ -54,16 +49,4 @@ if (module.hot) {
 
 renderApp()
 
-// Create new instance
-const instance = new Worker()
 
-function callback(data: any) {
-  console.log('got data:', data)
-}
-
-async function init() {
-  await instance.processData('$[*]', [ {}, {}, {}, {} ], Comlink.proxy(callback))
-  console.log('done!')
-}
-
-init()

@@ -1,10 +1,10 @@
-import { flow, makeAutoObservable } from 'mobx'
-import { JSONPath } from 'jsonpath-plus'
+import { action, flow, makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
 import { readFile } from 'src/features/FileLoader'
 import { QueryResult, Snapshot as QueryResultSnapshot } from 'src/features/Query/Result/QueryResult.model'
 
+import { evalQuery } from 'src/features/Query/evalQuery'
 
 export interface Snapshot {
   json: string | null,
@@ -51,6 +51,7 @@ export class Store {
 
     makeAutoObservable(this, {
       loadFile: false,
+      evaluateQuery: false,
     })
   }
 
@@ -75,30 +76,22 @@ export class Store {
     this.evaluateQuery()
   }
 
-  evaluateQuery = () => {
+  evaluateQuery = flow(function* (this: Store) {
     this.queryResults = []
     this.loading = true
     console.log('eval start')
-    try {
-      JSONPath({
-        path: this.query,
-        json: this.jsonAsObject,
-        callback: (value, type, full) => {
-          this.addQueryResult(value)
-          console.log('results:', this.queryResults.length)
-          // console.log('node', {
-          //   value,
-          //   type,
-          //   full
-          // })
-        },
-      })
-    } catch (error) {
-      console.warn('oops!', error)
-    }
+    yield evalQuery(this.query, this.jsonAsObject, action('result node found', (data: any) => {
+      this.addQueryResult(data.value)
+      console.log('results:', this.queryResults.length)
+      // console.log('node', {
+      //   value,
+      //   type,
+      //   full
+      // })
+    }))
     console.log('eval done')
     this.loading = false
-  }
+  }).bind(this)
 
   addQueryResult = (result: unknown) => {
     // console.log('add:', result)
