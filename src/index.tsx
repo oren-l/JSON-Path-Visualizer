@@ -62,8 +62,8 @@ function callback(data: any) {
 }
 
 async function init() {
-  const processed = await instance.processData(Comlink.proxy(callback))
-  console.log('got data from worker:', processed)
+  await instance.processData('$[*]', [ {}, {}, {}, {} ], Comlink.proxy(callback))
+  console.log('done!')
 }
 
 init()
