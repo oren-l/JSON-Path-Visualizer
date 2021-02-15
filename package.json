@@ -15,6 +15,7 @@
     "@types/styled-components": "^5.1.7",
     "@types/webpack-env": "^1.16.0",
     "ahooks": "^2.9.6",
+    "comlink": "^4.3.0",
     "comlink-loader": "^2.0.0",
     "eslint-plugin-use-macros": "^2.5.0",
     "fontsource-roboto": "^4.0.0",

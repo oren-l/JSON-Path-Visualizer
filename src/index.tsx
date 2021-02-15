@@ -9,6 +9,8 @@ import { StoreProvider, Store } from 'src/store'
 
 import Worker from './worker'
 
+import * as Comlink from 'comlink'
+
 
 configure({
   enforceActions: 'always',
@@ -55,14 +57,13 @@ renderApp()
 // Create new instance
 const instance = new Worker()
 
-const onClick = async () => {
-  const data = 'Some data'
-
-  const processed = await instance.processData(data)
-
-  console.log(processed)
-
+function callback(data: any) {
+  console.log('got data:', data)
 }
 
-onClick()
+async function init() {
+  const processed = await instance.processData(Comlink.proxy(callback))
+  console.log('got data from worker:', processed)
+}
 
+init()
