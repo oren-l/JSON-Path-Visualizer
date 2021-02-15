@@ -7,6 +7,9 @@ import { ThemeProvider } from 'src/theme'
 import { StoreProvider, Store } from 'src/store'
 
 
+import Worker from './worker'
+
+
 configure({
   enforceActions: 'always',
   computedRequiresReaction: true,
@@ -48,4 +51,18 @@ if (module.hot) {
 
 
 renderApp()
+
+// Create new instance
+const instance = new Worker()
+
+const onClick = async () => {
+  const data = 'Some data'
+
+  const processed = await instance.processData(data)
+
+  console.log(processed)
+
+}
+
+onClick()
 
