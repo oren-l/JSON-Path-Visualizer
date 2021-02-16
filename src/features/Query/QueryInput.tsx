@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 export const QueryInput = observer(function QueryInput() {
   const store = useStore()
-  const [ temp, setTemp ] = useState<string>(store.query)
+  const [ temp, setTemp ] = useState<string>('$')
 
   useDebounceEffect(
     action('query change', () => {
@@ -20,13 +20,16 @@ export const QueryInput = observer(function QueryInput() {
   )
 
   return (
-    <TextField
-      label='Path'
-      variant='outlined'
-      fullWidth
-      margin='normal'
-      value={temp}
-      onChange={event => setTemp(event.target.value)}
-    />
+    <div>
+      <TextField
+        label='Path'
+        variant='outlined'
+        fullWidth
+        margin='normal'
+        value={temp}
+        onChange={event => setTemp(event.target.value)}
+      />
+      <button onClick={store.query?.abort}>Abort</button>
+    </div>
   )
 })

@@ -1,9 +1,13 @@
 import { JSONPath } from 'jsonpath-plus'
+import * as Comlink from 'comlink'
 
 type Callback = (data: any) => void
 
-export function processData(query: string, json: any, cb: Callback): void {
-  console.log('eval start')
+console.log('worker here')
+
+class Foo {
+  process(query: string, json: any, cb: Callback) {
+    console.log('processData start', { query, json })
     try {
       JSONPath({
         path: query,
@@ -19,5 +23,8 @@ export function processData(query: string, json: any, cb: Callback): void {
     } catch (error) {
       console.warn('oops!', error)
     }
-    console.log('eval done')
+    console.log('processData done')
+  }
 }
+
+Comlink.expose(Foo)

@@ -1,12 +1,10 @@
-declare module 'comlink-loader!*' {
-  type Callback = (data: any) => void
+declare module 'worker-loader!*' {
+  // You need to change `Worker`, if you specified a different value for the `workerType` option
   class WebpackWorker extends Worker {
     constructor();
-
-    // Add any custom functions to this class.
-    // Make note that the return type needs to be wrapped in a promise.
-    processData(query: string, json: any, cb: Callback): Promise<void>;
   }
 
-  export = WebpackWorker;
+  // Uncomment this if you set the `esModule` option to `false`
+  // export = WebpackWorker;
+  export default WebpackWorker
 }
