@@ -6,6 +6,7 @@ import { sleep } from 'src/utils/sleep'
 
 
 export interface Snapshot {
+  filename: string | null,
   json: string | null,
   loading: boolean,
   query: QuerySnapshot | null,
@@ -15,6 +16,7 @@ type GetSnapshot = (instance: Store) => Snapshot
 type FromSnapshot = (snapshot: Snapshot) => Store
 
 const defaultState: Snapshot = {
+  filename: null,
   json: null,
   loading: false,
   query: null,
@@ -22,6 +24,7 @@ const defaultState: Snapshot = {
 
 
 export class Store {
+  filename: string | null
   json: string | null
   loading: boolean
   query: Query | null
@@ -30,15 +33,17 @@ export class Store {
     return new Store(snapshot)
   }
 
-  static getSnapshot: GetSnapshot = ({ json, loading, query }) => ({
+  static getSnapshot: GetSnapshot = ({ filename, json, loading, query }) => ({
+    filename,
     json,
     loading,
     query: query ? Query.getSnapshot(query) : null,
   })
 
   constructor(initialState: Snapshot = defaultState) {
-    const { json, loading, query } = initialState
+    const { filename, json, loading, query } = initialState
 
+    this.filename = filename
     this.json = json
     this.loading = loading
     this.query = query ? new Query(query) : null
@@ -54,6 +59,7 @@ export class Store {
   }
 
   loadFile = flow(function* loadFile(this: Store, file: File) {
+    this.filename = file.name
     this.loading = true
     this.json = null
     this.json = yield readFile(file)
