@@ -79,6 +79,8 @@ export class Store {
     this.query = new Query({
       expression: query,
       results: [],
+      resultsPerPage: 10,
+      currentPage: 1,
     })
     try {
       yield this.query.exec(this.jsonAsObject)

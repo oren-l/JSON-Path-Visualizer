@@ -8,6 +8,8 @@ import { evalQuery, abort } from './evalQuery'
 export interface Snapshot {
   expression: string,
   results: QueryResultSnapshot[],
+  resultsPerPage: number,
+  currentPage: number,
 }
 
 type GetSnapshot = (instance: Query) => Snapshot
@@ -17,11 +19,16 @@ type FromSnapshot = (snapshot: Snapshot) => Query
 export class Query {
   expression: string
   results: QueryResult[]
+  resultsPerPage: number
+  currentPage: number
   isAborted: boolean = false
 
   constructor(initialState: Snapshot) {
     this.expression = initialState.expression
     this.results = initialState.results
+    this.resultsPerPage = initialState.resultsPerPage
+    this.currentPage = initialState.currentPage
+
     makeAutoObservable(this, {
       expression: false, // do not track id as it should never changes
       exec: false,
@@ -32,10 +39,15 @@ export class Query {
     return new Query(snapshot)
   }
 
-  static getSnapshot: GetSnapshot = ({ expression, results }) => ({
-    expression,
-    results: results.map(QueryResult.getSnapshot),
-  })
+  static getSnapshot: GetSnapshot = instance => {
+    const { expression, results, resultsPerPage, currentPage } = instance
+    return {
+      expression,
+      results: results.map(QueryResult.getSnapshot),
+      resultsPerPage,
+      currentPage,
+    }
+  }
 
   addQueryResult = (result: unknown) => {
     // console.log('add:', result)
@@ -62,5 +74,15 @@ export class Query {
   abort = () => {
     this.isAborted = true
     abort()
+  }
+
+  setCurrentPage = (page: number) => {
+    this.currentPage = page
+  }
+
+  get resultsOnCurrentPage () {
+    const start = (this.currentPage - 1) * this.resultsPerPage
+    const end = start + this.resultsPerPage
+    return this.results.slice(start, end)
   }
 }
