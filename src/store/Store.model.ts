@@ -79,10 +79,10 @@ export class Store {
       this.loading = false
     } catch (error) {
       if (error !== 'abort') {
-        this.loading = false
         console.error(error)
       }
       console.warn('exec aborted')
+      this.loading = false
     }
   }).bind(this)
 }

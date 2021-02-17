@@ -31,16 +31,13 @@ export const QueryInput = observer(function QueryInput() {
   )
 
   return (
-    <div>
-      <TextField
-        label='Path'
-        variant='outlined'
-        fullWidth
-        margin='normal'
-        value={temp}
-        onChange={event => setTemp(event.target.value)}
-      />
-      <button onClick={store.query?.abort}>Abort</button>
-    </div>
+    <TextField
+      label='Path'
+      variant='outlined'
+      fullWidth
+      margin='normal'
+      value={temp}
+      onChange={event => setTemp(event.target.value)}
+    />
   )
 })
