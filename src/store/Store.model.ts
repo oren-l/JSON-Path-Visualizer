@@ -53,7 +53,7 @@ export class Store {
     return JSON.parse(this.json ?? '""')
   }
 
-  loadFile = flow(function* (this: Store, file: File) {
+  loadFile = flow(function* loadFile(this: Store, file: File) {
     this.loading = true
     this.json = null
     this.json = yield readFile(file)
@@ -65,7 +65,7 @@ export class Store {
     // TODO: implement abort
   }).bind(this)
 
-  setQuery = flow(function* (this: Store, query: string) {
+  setQuery = flow(function* setQuery(this: Store, query: string) {
     this.query?.abort() // abort last query exec
     yield sleep() // hack that solves new query not being executed
     this.loading = true

@@ -47,7 +47,7 @@ export class Query {
     console.log('results:', this.results.length)
   }
 
-  exec = flow(function* (this: Query, jsonObj: unknown) {
+  exec = flow(function* exec(this: Query, jsonObj: unknown) {
     this.isAborted = false
     yield evalQuery(this.expression, jsonObj, action('result node found', (data: any) => {
       this.addQueryResult(data.value)
