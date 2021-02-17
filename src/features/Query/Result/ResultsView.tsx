@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 
 import { useStore } from 'src/store'
 import { ResultsList } from './ResultsList'
-import { AbortArea } from '../Abort/AbortArea'
 
 
 export const ResultsView = observer(function ResultsView() {
@@ -13,7 +12,6 @@ export const ResultsView = observer(function ResultsView() {
 
   return (
     <>
-      <AbortArea />
       <div>
         <span>
           {`#Results: ${resultsCount}`}
