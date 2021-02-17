@@ -8,13 +8,15 @@ export const ResultsList = observer(function ResultsList() {
   return (
     <>
       {
-        store.queryResults.map(result => (
-          <Paper key={result.id} >
-            <pre>
-              {JSON.stringify(result.data, null, 2)}
-            </pre>
-          </Paper>
-        ))
+        store.query?.results
+          .slice(0, 10) // TODO: replace with pagination
+          .map(result => (
+            <Paper key={result.id} >
+              <pre>
+                {JSON.stringify(result.data, null, 2)}
+              </pre>
+            </Paper>
+          ))
       }
     </>
   )

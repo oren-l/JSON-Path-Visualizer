@@ -6,7 +6,7 @@ import { FileDropzone } from 'src/features/FileLoader'
 import { MainProgressBar } from 'src/features/UI/MainProgressBar'
 
 
-import { ResultsList } from 'src/features/Query/Result/ResultsList'
+import { ResultsView } from 'src/features/Query/Result/ResultsView'
 import { QueryInput } from 'src/features/Query/QueryInput'
 
 
@@ -29,7 +29,7 @@ export function App() {
         <Main>
           <Container>
             <QueryInput />
-            <ResultsList />
+            <ResultsView />
           </Container>
         </Main>
       </Layout>

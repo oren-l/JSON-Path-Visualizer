@@ -1,16 +1,14 @@
 import { flow, makeAutoObservable } from 'mobx'
-import { JSONPath } from 'jsonpath-plus'
-import { nanoid } from 'nanoid'
 
 import { readFile } from 'src/features/FileLoader'
-import { QueryResult, Snapshot as QueryResultSnapshot } from 'src/features/Query/Result/QueryResult.model'
+import { Query, Snapshot as QuerySnapshot } from 'src/features/Query/Query.model'
+import { sleep } from 'src/utils/sleep'
 
 
 export interface Snapshot {
   json: string | null,
   loading: boolean,
-  query: string,
-  queryResults: QueryResultSnapshot[],
+  query: QuerySnapshot | null,
 }
 
 type GetSnapshot = (instance: Store) => Snapshot
@@ -19,38 +17,35 @@ type FromSnapshot = (snapshot: Snapshot) => Store
 const defaultState: Snapshot = {
   json: null,
   loading: false,
-  query: '$',
-  queryResults: [],
+  query: null,
 }
 
 
 export class Store {
   json: string | null
   loading: boolean
-  query: string
-  queryResults: QueryResult[]
+  query: Query | null
 
   static fromSnapshot: FromSnapshot = snapshot => {
     return new Store(snapshot)
   }
 
-  static getSnapshot: GetSnapshot = ({ json, loading, query, queryResults }) => ({
+  static getSnapshot: GetSnapshot = ({ json, loading, query }) => ({
     json,
     loading,
-    query,
-    queryResults: queryResults.map(QueryResult.getSnapshot),
+    query: query ? Query.getSnapshot(query) : null,
   })
 
   constructor(initialState: Snapshot = defaultState) {
-    const { json, loading, query, queryResults } = initialState
+    const { json, loading, query } = initialState
 
     this.json = json
     this.loading = loading
-    this.query = query
-    this.queryResults = queryResults.map(QueryResult.fromSnapshot)
+    this.query = query ? new Query(query) : null
 
     makeAutoObservable(this, {
       loadFile: false,
+      setQuery: false,
     })
   }
 
@@ -58,51 +53,36 @@ export class Store {
     return JSON.parse(this.json ?? '""')
   }
 
-  loadFile = flow(function* (this: Store, file: File) {
+  loadFile = flow(function* loadFile(this: Store, file: File) {
     this.loading = true
     this.json = null
     this.json = yield readFile(file)
     this.loading = false
     console.log('done loading')
-    this.evaluateQuery()
+    this.setQuery('$')
 
     // TODO: handle exception
     // TODO: implement abort
   }).bind(this)
 
-  setQuery = (query: string) => {
-    this.query = query
-    this.evaluateQuery()
-  }
-
-  evaluateQuery = () => {
-    this.queryResults = []
+  setQuery = flow(function* setQuery(this: Store, query: string) {
+    this.query?.abort() // abort last query exec
+    yield sleep() // hack that solves new query not being executed
     this.loading = true
-    console.log('eval start')
+    console.log('new query:', query)
+    this.query = new Query({
+      expression: query,
+      results: [],
+    })
     try {
-      JSONPath({
-        path: this.query,
-        json: this.jsonAsObject,
-        callback: (value, type, full) => {
-          this.addQueryResult(value)
-          console.log('results:', this.queryResults.length)
-          // console.log('node', {
-          //   value,
-          //   type,
-          //   full
-          // })
-        },
-      })
+      yield this.query.exec(this.jsonAsObject)
+      this.loading = false
     } catch (error) {
-      console.warn('oops!', error)
+      if (error !== 'abort') {
+        console.error(error)
+      }
+      console.warn('exec aborted')
+      this.loading = false
     }
-    console.log('eval done')
-    this.loading = false
-  }
-
-  addQueryResult = (result: unknown) => {
-    // console.log('add:', result)
-    const qr = new QueryResult(nanoid(), result)
-    this.queryResults.push(qr)
-  }
+  }).bind(this)
 }
