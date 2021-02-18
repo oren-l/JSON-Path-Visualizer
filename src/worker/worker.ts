@@ -13,11 +13,7 @@ class Foo {
         path: query,
         json,
         callback: (value, type, full) => {
-          cb({
-            value,
-            type,
-            full,
-          })
+          cb(value) // this op is expensive - pass as little data to cb as possible (maybe deep cloning)
         },
       })
     } catch (error) {
