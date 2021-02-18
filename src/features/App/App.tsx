@@ -7,6 +7,7 @@ import { MainProgressBar } from 'src/features/UI/MainProgressBar'
 
 import { ResultsView } from 'src/features/Query/Result/ResultsView'
 import { QueryInput } from 'src/features/Query/QueryInput'
+import { AbortArea } from 'src/features/Query/Abort/AbortArea'
 import { AppBar } from 'src/features/AppBar'
 
 
@@ -25,6 +26,7 @@ export function App() {
         <Main>
           <Container>
             <QueryInput />
+            <AbortArea />
             <ResultsView />
           </Container>
         </Main>
