@@ -4,6 +4,8 @@
     },
     "eslint.alwaysShowStatus": true,
     "cSpell.words": [
+        "Autofix",
+        "appbar",
         "comlink",
         "fontsource"
     ]
